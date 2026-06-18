@@ -1,0 +1,91 @@
+import React, { useState, useEffect, useRef } from 'react'
+import { Card, Input, Button, Space, List, Avatar, message, Spin, Tag, Divider, Typography, Row, Col, Upload, Modal, Progress, Popconfirm } from 'antd'
+import { SendOutlined, RobotOutlined, UserOutlined, QuestionCircleOutlined, HistoryOutlined, ClearOutlined, UploadOutlined, FileTextOutlined, FolderOpenOutlined, DeleteOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons'
+import { aiAPI } from '../services/api'
+import './AIChat.css'
+
+const { Title, Text, Paragraph } = Typography
+
+// 简单的Markdown转HTML函数（用于基本的Markdown支持）
+const renderMarkdown = (content) => {
+  if (!content) return '';
+
+  // 转义HTML特殊字符，但保留已有的HTML标签
+  let html = content
+    .replace(/&(?![a-zA-Z0-9#]+;)/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+
+  // 标题
+  html = html.replace(/^#{6} (.*$)/gm, '<h6>$1</h6>')
+            .replace(/^#{5} (.*$)/gm, '<h5>$1</h5>')
+            .replace(/^#{4} (.*$)/gm, '<h4>$1</h4>')
+            .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+            .replace(/^## (.*$)/gm, '<h2>$1</h2>')
+            .replace(/^# (.*$)/gm, '<h1>$1</h1>');
+
+  // 粗体和斜体
+  html = html.replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>')
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+            .replace(/___(.*?)___/g, '<strong><em>$1</em></strong>')
+            .replace(/__(.*?)__/g, '<strong>$1</strong>')
+            .replace(/_(.*?)_/g, '<em>$1</em>');
+
+  // 代码块
+  html = html.replace(/```(\w+)?\s*([\s\S]*?)\s*```/g, '<pre><code class="language-$1">$2</code></pre>')
+            .replace(/`([^`]+)`/g, '<code>$1</code>');
+
+  // 链接
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+
+  // 处理有序列表 - 修复编号重复问题
+  // 使用简单的方法：将每个以数字+点开头的行转换为独立的有序列表项
+  html = html.replace(/^(\d+)\.\s+(.+)$/gm, '<ol><li>$2</li></ol>');
+
+  // 处理无序列表
+  html = html.replace(/((?:^\s*-\s+.+(?:\n|$))+)/gm, (match) => {
+    const items = match.trim().split('\n').filter(line => /^\s*-\s+/.test(line));
+    const listItems = items.map(item => {
+      const content = item.replace(/^\s*-\s*/, '');
+      return `<li>${content}</li>`;
+    }).join('');
+    return `<ul>${listItems}</ul>`;
+  });
+
+  // 引用
+  html = html.replace(/^>\s+(.*$)/gm, '<blockquote>$1</blockquote>');
+
+  // 分割线
+  html = html.replace(/^---$/gm, '<hr>')
+            .replace(/^\*\*\*$/gm, '<hr>');
+
+  // 表格
+  html = html.replace(/\|(.+)\|/g, (match, content) => {
+    if (content.includes('---')) {
+      // 表头分隔行
+      return '<thead><tr>' + content.split('|').map(cell => `<th>${cell.trim()}</th>`).join('') + '</tr></thead>';
+    } else {
+      // 普通行
+      return '<tr>' + content.split('|').map(cell => `<td>${cell.trim()}</td>`).join('') + '</tr>';
+    }
+  });
+
+  // 段落
+  html = html.replace(/\n\n/g, '</p><p>')
+            .replace(/\n/g, '<br>');
+
+  // 包装段落
+  if (!html.startsWith('<')) {
+    html = `<p>${html}</p>`;
+  }
+
+  // 移除多余的空段落
+  html = html.replace(/<p><\/p>/g, '');
+
+  return html;
+};
+
+const AIChat = () => {

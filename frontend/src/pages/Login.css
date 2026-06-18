@@ -1,0 +1,42 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+  padding: 20px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.login-title {
+  text-align: center;
+  color: #1890ff;
+  font-size: 24px;
+  margin-bottom: 0;
+}
+
+.login-footer {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 12px;
+  color: #8c8c8c;
+  line-height: 1.5;
+}
+
+.login-footer p {
+  margin: 4px 0;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .login-card {
+    margin: 0 16px;
+  }
+}

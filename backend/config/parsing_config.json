@@ -1,0 +1,63 @@
+{
+  "dose_patterns": {
+    "description": "剂量信息正则表达式模式，用于从药材名称中提取并移除剂量",
+    "patterns": [
+      {
+        "name": "standard_dose",
+        "pattern": "\\d+(\\.\\d+)?[gml斤两钱]*",
+        "description": "标准剂量格式：数字+单位(如 10g, 5ml, 3两)"
+      },
+      {
+        "name": "chinese_dose",
+        "pattern": "[一二三四五六七八九十百千万]+[gml斤两钱]*",
+        "description": "中文数字剂量：如 三两, 五钱"
+      },
+      {
+        "name": "fraction_dose",
+        "pattern": "\\d+/\\d+[gml斤两钱]*",
+        "description": "分数剂量：如 1/2两"
+      }
+    ],
+    "combined_pattern": "(\\d+(\\.\\d+)?[gml斤两钱]*|[一二三四五六七八九十百千万]+[gml斤两钱]*|\\d+/\\d+[gml斤两钱]*)"
+  },
+  "parentheses_patterns": {
+    "description": "括号内容移除配置",
+    "patterns": [
+      {
+        "name": "round_brackets",
+        "pattern": "\\([^)]*\\)",
+        "description": "圆括号内容"
+      },
+      {
+        "name": "square_brackets",
+        "pattern": "\\[[^\\]]*\\]",
+        "description": "方括号内容"
+      },
+      {
+        "name": "chinese_brackets",
+        "pattern": "（[^）]*）",
+        "description": "中文括号内容"
+      }
+    ]
+  },
+  "separators": {
+    "description": "药材名称分隔符",
+    "characters": ["、", "，", ",", "。", ";", "；", " "],
+    "priority": ["、", "，", ",", "。"]
+  },
+  "special_handlers": {
+    "description": "特殊处理规则",
+    "rules": [
+      {
+        "name": "remove_notes",
+        "pattern": "各.*$",
+        "description": "移除'各'字后面的内容（如'甘草各10g'中的'各10g'）"
+      },
+      {
+        "name": "remove_equal",
+        "pattern": "等.*$",
+        "description": "移除'等'字后面的内容"
+      }
+    ]
+  }
+}

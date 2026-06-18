@@ -1,0 +1,92 @@
+# ============ 环境与密钥 ============
+.env
+.env.local
+.env.production
+*.env
+
+# ============ Python ============
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.venv/
+venv/
+ENV/
+
+# ============ 模型缓存 ============
+model_cache/
+
+# ============ 向量数据库（超过100MB限制） ============
+backend/data/
+
+# ============ Node.js ============
+node_modules/
+frontend/node_modules/
+
+# ============ 构建产物 ============
+frontend/dist/
+frontend/build/
+
+# ============ IDE ============
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ============ 操作系统 ============
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ============ 大数据文件 ============
+*.csv
+药材数据.json
+中药方剂数据.json
+spider/herb_details/
+spider/zysj_full_urls.txt
+spider/zysj_hrefs.txt
+中成药数据*.csv
+
+# ============ FAISS向量数据库 ============
+*.faiss
+faiss_index/
+
+# ============ 日志 ============
+*.log
+logs/
+
+# ============ Claude/CodeBuddy ============
+.claude/
+.codebuddy/
+
+# ============ Docker数据 ============
+data/
+mysql_data/
+neo4j_data/
+neo4j_logs/
+
+# ============ 其他（不需要上传的文件） ============
+image.png
+知识图谱构建.pptx
+项目策划书.md
+系统功能介绍与应用场景价值分析.md
+
+# ============ 发布安全补充 ============
+/()
+*.db
+*.sqlite
+*.sqlite3
+*.pem
+*.key
+credentials.json
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage/
