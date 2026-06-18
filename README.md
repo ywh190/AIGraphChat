@@ -175,7 +175,7 @@ npm run dev
 ## 项目结构
 
 ```text
-graduation_project/
+AIGraphChat/
 ├── backend/                 # FastAPI 应用、业务服务、DAL 与导入脚本
 │   ├── app/api/             # 认证、数据、图谱、AI 和同步接口
 │   ├── app/services/        # RAG、检索、知识图谱与同步服务
