@@ -135,7 +135,7 @@ flowchart LR
 - Node.js 18+
 - MySQL 8.0
 - Neo4j 4.4+
-- Redis 6+ （可选；关闭后可使用内存缓存）
+- Redis 6+ 
 
 ### 2. 配置后端
 
@@ -170,7 +170,7 @@ npm run dev
 
 访问 `http://localhost:3000`。Vite 会将 `/api` 请求代理到 `http://localhost:10001`。
 
-> 仓库保留了后端、MySQL 与 Compose 的容器化配置骨架；当前建议使用上述手动方式启动前后端。
+> 仓库保留了后端、MySQL 与 Compose 的容器化配置骨架
 
 ## 项目结构
 
